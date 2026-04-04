@@ -1,0 +1,89 @@
+name: fhs-infra
+
+services:
+  # Craft CMS App
+  craft-app:
+    build:
+      context: ./apps/forresthill-postgres
+      dockerfile: docker/php/Dockerfile
+      args:
+        - USER_ID=${UID:-1000}
+        - GROUP_ID=${GID:-1000}
+    container_name: fhs-craft-app
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ./apps/forresthill-postgres:/var/www/html:Z
+    env_file: ./apps/forresthill-postgres/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "SCRIPT_NAME=/ping SCRIPT_FILENAME=/ping REQUEST_METHOD=GET cgi-fcgi -bind -connect 127.0.0.1:9000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    develop:
+      watch:
+        - path: ./apps/forresthill-postgres/composer.json
+          action: rebuild
+        - path: ./apps/forresthill-postgres/templates
+          action: sync
+          target: /var/www/html/templates
+
+  # FHSTV Svelte Dev Server
+  fhstv-dev:
+    image: node:24-alpine
+    container_name: fhs-fhstv-dev
+    user: "${UID:-1000}:${GID:-1000}"
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+      - HOME=/tmp/home # Ensure npm/pnpm can write config/cache as non-root
+    volumes:
+      - ./apps/fhstv-svelte-5:/app:Z
+    # Note: apk add requires root, so we do it in a way that respects the user mapping
+    command: >
+      sh -c "corepack enable && pnpm install && pnpm dev --host"
+    networks:
+      - frontend
+    depends_on:
+      - craft-app
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5173"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Calendar Sync Service
+  calendar-sync:
+    build:
+      context: ./apps/fhs-calendar-sync
+      dockerfile: Dockerfile
+    container_name: fhs-calendar-sync
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ./apps/fhs-calendar-sync/data:/app/data:Z
+      - ./apps/fhs-calendar-sync/semper-service-account.json:/app/config/service-account.json:ro,Z
+    environment:
+      - GOOGLE_CALENDAR_ID=${GOOGLE_CALENDAR_ID}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/config/service-account.json
+      - DATABASE_URL=sqlite:/app/data/database.sqlite
+      - SYNC_INTERVAL_MINUTES=${SYNC_INTERVAL_MINUTES:-60}
+      - API_PREFIX=${API_PREFIX:-}
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

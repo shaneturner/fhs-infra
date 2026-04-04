@@ -1,0 +1,30 @@
+{
+    # Production Global Config
+    admin 0.0.0.0:2019
+    email {$CADDY_EMAIL}
+}
+
+# Forrest Hill Main Website
+{$SITE_DOMAIN} {
+    root * /var/www/html/web
+    php_fastcgi craft-app:9000
+    file_server
+
+    # Craft CMS standard rewrite
+    try_files {path} {path}/ /index.php?{query}
+}
+
+# FHSTV Svelte (SSG)
+{$FHSTV_DOMAIN} {
+    # Serve pre-built static files directly
+    root * /var/www/fhstv
+    file_server
+    
+    # Fallback to index.html for SvelteKit client-side routing
+    try_files {path} /index.html
+}
+
+# Calendar Sync API
+{$API_DOMAIN} {
+    reverse_proxy calendar-sync:8000
+}

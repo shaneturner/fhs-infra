@@ -1,0 +1,9 @@
+[submodule "apps/forresthill-postgres"]
+	path = apps/forresthill-postgres
+	url = git@github.com:shaneturner/forresthill-postgres.git
+[submodule "apps/fhstv-svelte-5"]
+	path = apps/fhstv-svelte-5
+	url = git@github.com:shaneturner/fhstv-svelte-5.git
+[submodule "apps/fhs-calendar-sync"]
+	path = apps/fhs-calendar-sync
+	url = git@github.com:shaneturner/fhs-calendar-sync.git

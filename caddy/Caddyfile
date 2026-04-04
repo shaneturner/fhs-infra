@@ -1,0 +1,25 @@
+{
+    # Admin enabled for health checks
+    admin 0.0.0.0:2019
+    auto_https off
+}
+
+# Forrest Hill Main Website
+http://{$SITE_DOMAIN} {
+    root * /var/www/html/web
+    php_fastcgi craft-app:9000
+    file_server
+
+    # Craft CMS standard rewrite
+    try_files {path} {path}/ /index.php?{query}
+}
+
+# FHSTV Svelte Dev Server
+http://{$FHSTV_DOMAIN} {
+    reverse_proxy fhstv-dev:5173
+}
+
+# Calendar Sync API
+http://{$API_DOMAIN} {
+    reverse_proxy calendar-sync:8000
+}

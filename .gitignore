@@ -1,0 +1,6 @@
+.env
+data/
+apps/*/.env
+apps/*/semper-service-account.json
+# Ignore local docker volumes/data if mapped
+.docker-data/
