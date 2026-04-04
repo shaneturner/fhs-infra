@@ -68,7 +68,7 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./apps/fhs-calendar-sync/data:/app/data:Z
-      - ./apps/fhs-calendar-sync/semper-service-account.json:/app/config/service-account.json:ro,Z
+      - ./${GOOGLE_APPLICATION_CREDENTIALS_PATH:-./apps/fhs-calendar-sync/semper-service-account.json}:/app/config/service-account.json:ro,Z
     environment:
       - GOOGLE_CALENDAR_ID=${GOOGLE_CALENDAR_ID}
       - GOOGLE_APPLICATION_CREDENTIALS=/app/config/service-account.json
