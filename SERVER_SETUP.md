@@ -106,9 +106,32 @@ sudo apt-get update
 # Install Docker packages
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
+# Enable and start Docker services on boot
+sudo systemctl enable --now docker.service containerd.service
+
+# Configure Log Rotation (Security & Stability)
+# Prevents logs from consuming all disk space—a common 2026 production failure mode.
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<EOF
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  }
+}
+EOF
+sudo systemctl restart docker
+
 # Add your user to the docker group to run commands without sudo
 sudo usermod -aG docker $USER
-# Log out and log back in to apply group changes
+
+# APPLY CHANGES: Log out and log back in (recommended) 
+# OR run the following to apply to the current session immediately:
+# newgrp docker 
+
+# Verify installation (should run without 'sudo')
+docker run --rm hello-world
 ```
 
 ### 2. Install Git and Git LFS
