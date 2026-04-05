@@ -21,6 +21,8 @@ services:
       - DB_USER=${DB_USER:-craft}
       - DB_PASSWORD=${DB_PASSWORD:-craft}
       - DB_SCHEMA=public
+      - PHP_OPCACHE_ENABLE=1
+      - PHP_OPCACHE_REVALIDATE_FREQ=2
     env_file: ./apps/forresthill-postgres/.env
     depends_on:
       postgres:
@@ -55,6 +57,8 @@ services:
       - DB_USER=${DB_USER:-craft}
       - DB_PASSWORD=${DB_PASSWORD:-craft}
       - DB_SCHEMA=public
+      - PHP_OPCACHE_ENABLE=1
+      - PHP_OPCACHE_REVALIDATE_FREQ=2
 
   # Mailpit Dev Tool
   mailpit:
