@@ -74,6 +74,11 @@ To pull the latest changes and media for all applications:
 ./scripts/setup.sh
 ```
 
+To verify that all LFS assets have been correctly pulled:
+```bash
+./scripts/check-lfs.sh
+```
+
 ### Viewing Logs
 ```bash
 docker compose logs -f

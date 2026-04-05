@@ -18,3 +18,9 @@ The core infrastructure for the main Craft CMS application (`forresthill-postgre
 - **Craft CMS Website**: `apps/forresthill-postgres`
 - **FHSTV (Svelte 5)**: `apps/fhstv-svelte-5`
 - **Calendar Sync (Rust)**: `apps/fhs-calendar-sync`
+
+## Environment Validation
+To ensure the local host is correctly configured with all required assets (especially Git LFS binary files):
+1.  Run `./scripts/setup.sh` to initialize and pull all assets.
+2.  Run `./scripts/check-lfs.sh` to verify that no LFS objects are missing.
+
