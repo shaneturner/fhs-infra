@@ -20,6 +20,28 @@ services:
       timeout: 5s
       retries: 5
 
+  # Craft CMS Queue Worker
+  craft-queue:
+    build:
+      context: ./apps/forresthill-postgres
+      dockerfile: docker/php/Dockerfile
+    container_name: fhs-craft-queue
+    user: "${UID:-1000}:${GID:-1000}"
+    env_file: ./apps/forresthill-postgres/.env
+    command: ["php", "craft", "queue/listen"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep '[p]hp craft queue/listen' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
   caddy:
     image: caddy:2-alpine
     container_name: fhs-caddy
@@ -40,6 +62,7 @@ services:
       - CADDY_EMAIL=${CADDY_EMAIL}
     networks:
       - frontend
+      - backend
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:2019/metrics"]

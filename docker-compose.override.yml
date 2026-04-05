@@ -13,6 +13,14 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./apps/forresthill-postgres:/var/www/html:Z
+    environment:
+      - DB_SERVER=postgres
+      - DB_DRIVER=pgsql
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE:-craft_pg}
+      - DB_USER=${DB_USER:-craft}
+      - DB_PASSWORD=${DB_PASSWORD:-craft}
+      - DB_SCHEMA=public
     env_file: ./apps/forresthill-postgres/.env
     depends_on:
       postgres:
@@ -34,6 +42,35 @@ services:
         - path: ./apps/forresthill-postgres/templates
           action: sync
           target: /var/www/html/templates
+
+  # Craft CMS Queue Worker
+  craft-queue:
+    volumes:
+      - ./apps/forresthill-postgres:/var/www/html:Z
+    environment:
+      - DB_SERVER=postgres
+      - DB_DRIVER=pgsql
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE:-craft_pg}
+      - DB_USER=${DB_USER:-craft}
+      - DB_PASSWORD=${DB_PASSWORD:-craft}
+      - DB_SCHEMA=public
+
+  # Mailpit Dev Tool
+  mailpit:
+    image: axllent/mailpit
+    container_name: fhs-mailpit
+    networks:
+      - backend
+    restart: unless-stopped
+    environment:
+      MP_MAX_MESSAGES: 5000
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:8025/api/v1/info"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   # FHSTV Svelte Dev Server
   fhstv-dev:

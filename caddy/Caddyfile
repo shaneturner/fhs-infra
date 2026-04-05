@@ -23,3 +23,8 @@ http://{$FHSTV_DOMAIN} {
 http://{$API_DOMAIN} {
     reverse_proxy calendar-sync:8000
 }
+
+# Mailpit Dev Tool
+http://mailpit.localhost {
+    reverse_proxy mailpit:8025
+}
