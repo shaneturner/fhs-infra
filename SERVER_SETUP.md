@@ -57,7 +57,29 @@ Protects against brute-force SSH attacks.
 sudo apt update
 sudo apt install fail2ban -y
 sudo systemctl enable fail2ban
-sudo systemctl start fail2ban
+sudo systemctl restart fail2ban
+```
+
+### 5. Customizing the Welcome Message (MOTD)
+Replace the default cloud-init notice with a branded welcome message.
+```bash
+# Edit the Message of the Day file
+sudo nano /etc/motd
+```
+Replace the file content with:
+```text
+*************************************************************************
+*                    FORREST HILL SCHOOL INFRASTRUCTURE                 *
+*                                                                       *
+*  Welcome to the production environment for the FHS digital services.  *
+*  This server hosts:                                                   *
+*  - Craft CMS (Main Website)                                           *
+*  - FHSTV (Svelte 5 Video Portal)                                      *
+*  - Calendar Sync (Rust Microservice)                                  *
+*                                                                       *
+*  Please ensure all deployment tasks are executed as the 'deploy' user *
+*  and strictly follow the protocols in ~/fhs-infra/README.md.          *
+*************************************************************************
 ```
 
 ---
