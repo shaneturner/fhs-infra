@@ -144,19 +144,33 @@ git lfs install
 ---
 
 ## Phase 3: Project Deployment
-
 ### 1. Clone the Repository
-Since the project uses submodules, use the `--recursive` flag.
-```bash
-# Generate an SSH key on the server if you are cloning via SSH (recommended)
-ssh-keygen -t ed25519 -C "server-deploy-key"
-# Add the public key (~/.ssh/id_ed25519.pub) as a Deploy Key in your GitHub repository settings
+Since the project uses private submodules, standard **Deploy Keys** (which are restricted to a single repository) will **NOT** work for recursive clones. 
 
+**2026 Best Practice Options:**
+*   **Option A: Machine User (Recommended):** Create a dedicated GitHub account (e.g., `fhs-deploy-bot`), grant it read access to all relevant repositories, and use its SSH key on the server.
+*   **Option B: Fine-grained PAT (HTTPS):** Generate a Fine-grained Personal Access Token scoped to the 4 repositories and clone via HTTPS.
+
+#### Using Option A (Machine User / SSH):
+```bash
+# Generate an SSH key on the server
+ssh-keygen -t ed25519 -C "fhs-deploy-bot"
+# Add the public key (~/.ssh/id_ed25519.pub) to the BOT ACCOUNT'S GitHub SSH Settings (not as a repo Deploy Key)
+
+# Clone the repository recursively
 git clone --recursive git@github.com:shaneturner/fhs-infra.git
 cd fhs-infra
 ```
 
+#### Using Option B (Fine-grained PAT / HTTPS):
+```bash
+# Clone using your PAT as the username/password replacement
+git clone --recursive https://<your_pat_token>@github.com/shaneturner/fhs-infra.git
+cd fhs-infra
+```
+
 ### 2. Initialize and Pull Assets
+...
 Run the automated setup script to ensure all submodules are initialized and Git LFS assets are pulled.
 ```bash
 ./scripts/setup.sh
