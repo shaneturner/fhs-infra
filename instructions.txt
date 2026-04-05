@@ -10,6 +10,6 @@ docker exec fhs-craft-app php craft <command>
 docker exec fhs-craft-app composer <command>
 
 ## Entering the Container (Interactive Shell)
-To open an interactive bash shell inside the Craft application container:
+To open an interactive shell inside the Craft application container:
 
-docker exec -it fhs-craft-app bash
+docker exec -it fhs-craft-app sh
