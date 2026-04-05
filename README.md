@@ -7,6 +7,10 @@ This repository provides a unified Docker-based infrastructure for the Forrest H
 This project uses Git Submodules to manage the individual application repositories and Docker Compose Overrides to switch between development and production modes.
 
 - **apps/forresthill-postgres**: Craft CMS (PHP 8.2-FPM + PostgreSQL 16)
+  - **Optimized Base Image**: Uses `serversideup/php` for better performance and security.
+  - **Multi-Stage Build**: Separates build tools from the final runtime image.
+  - **Queue Worker**: Dedicated container running `./craft queue/listen` for background tasks.
+  - **Mailpit**: Integrated mail catcher for local SMTP testing.
 - **apps/fhstv-svelte-5**: Svelte 5 Frontend (SSG)
 - **apps/fhs-calendar-sync**: Rust Calendar Sync API
 
@@ -39,10 +43,12 @@ To start the unified development environment with hot-reloading:
 ```bash
 docker compose up
 ```
+
 **Access Points:**
-- **Main Website**: http://forresthill.localhost
-- **FHSTV (Dev Server)**: http://fhstv.localhost
-- **Calendar API**: http://api.forresthill.localhost
+- **Main Website**: [http://forresthill.localhost](http://forresthill.localhost)
+- **Mailpit Dashboard**: [http://mailpit.localhost](http://mailpit.localhost)
+- **FHSTV (Dev Server)**: [http://fhstv.localhost](http://fhstv.localhost)
+- **Calendar API**: [http://api.forresthill.localhost](http://api.forresthill.localhost)
 
 ---
 
@@ -56,7 +62,7 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 ```
 
 ### 2. Domain Management
-Update the SITE_DOMAIN, FHSTV_DOMAIN, and API_DOMAIN in your root .env to point to your live production domains. Caddy will automatically handle SSL certificate provisioning.
+Update the `SITE_DOMAIN`, `FHSTV_DOMAIN`, and `API_DOMAIN` in your root `.env` to point to your live production domains. Caddy will automatically handle SSL certificate provisioning.
 
 ---
 

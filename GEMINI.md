@@ -2,17 +2,19 @@
 
 This repository manages the infrastructure and orchestration for the Forrest Hill School digital properties, including the primary Craft CMS website, the Svelte-based FHSTV frontend, and the Calendar Sync service.
 
-## Active Refactoring Plan
+## Modernized Docker Architecture
 
-We are currently refactoring the Docker setup for the main Craft CMS application (`forresthill-postgres`) to align with modern best practices for both local development and production deployments. 
+The core infrastructure for the main Craft CMS application (`forresthill-postgres`) has been refactored to align with modern best practices for performance, security, and developer experience.
 
-The complete plan and checklist can be found here: `plans/docker-refactor-plan.md`
+### Key Architectural Features:
+1.  **Optimized Base Image:** Uses `serversideup/php:8.2-fpm-alpine`. This image is specifically tuned for PHP performance and provides non-root user mapping via `PUID` and `PGID`.
+2.  **Multi-Stage Builds:** The `Dockerfile` uses a layered approach to build frontend assets (Node.js) and install PHP dependencies (Composer), ensuring the final runtime image is lean and contains no unnecessary build tools.
+3.  **Clean Environment Separation:** The Docker configuration is split into base (`docker-compose.yml`), development (`docker-compose.override.yml`), and production (`docker-compose.prod.yml`) configurations.
+4.  **Integrated Queue Worker:** A dedicated container running `./craft queue/listen` handles background tasks independently of web requests.
+5.  **Local SMTP Catching:** [Mailpit](http://mailpit.localhost) is integrated into the development environment to safely intercept and preview outgoing emails.
+6.  **Unified Caddy Proxy:** Caddy handles all local routing (including subdomains for Mailpit, FHSTV, and the API) and manages automatic HTTPS in production.
 
-### High-Level Goals of the Refactor:
-1.  **Adopt Optimized Base Images:** Migrating to `serversideup/php:8.2-fpm-nginx` for better performance and security.
-2.  **Multi-Stage Builds:** Creating a production-ready `Dockerfile` that separates build dependencies (Composer, Node) from the final runtime image.
-3.  **Environment Separation:** Splitting the monolithic compose setup into:
-    *   `docker-compose.yml` (Base services)
-    *   `docker-compose.override.yml` (Local dev overrides, volume mounts)
-    *   `docker-compose.prod.yml` (Production overrides)
-4.  **New Services:** Adding a dedicated Craft Queue worker and Mailpit for local SMTP testing.
+## Active Projects
+- **Craft CMS Website**: `apps/forresthill-postgres`
+- **FHSTV (Svelte 5)**: `apps/fhstv-svelte-5`
+- **Calendar Sync (Rust)**: `apps/fhs-calendar-sync`
