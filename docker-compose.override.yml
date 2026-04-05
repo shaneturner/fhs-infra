@@ -7,23 +7,16 @@ services:
       context: ./apps/forresthill-postgres
       dockerfile: docker/php/Dockerfile
       args:
-        - USER_ID=${UID:-1000}
-        - GROUP_ID=${GID:-1000}
+        - USER_ID=${USER_ID:-1000}
+        - GROUP_ID=${GROUP_ID:-1000}
     container_name: fhs-craft-app
-    user: "${UID:-1000}:${GID:-1000}"
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     volumes:
       - ./apps/forresthill-postgres:/var/www/html:Z
     environment:
-      - DB_SERVER=postgres
-      - DB_DRIVER=pgsql
-      - DB_PORT=5432
-      - DB_DATABASE=${DB_DATABASE:-craft_pg}
-      - DB_USER=${DB_USER:-craft}
-      - DB_PASSWORD=${DB_PASSWORD:-craft}
-      - DB_SCHEMA=public
       - PHP_OPCACHE_ENABLE=1
       - PHP_OPCACHE_REVALIDATE_FREQ=2
-    env_file: ./apps/forresthill-postgres/.env
+    env_file: .env
     depends_on:
       postgres:
         condition: service_healthy
@@ -50,13 +43,6 @@ services:
     volumes:
       - ./apps/forresthill-postgres:/var/www/html:Z
     environment:
-      - DB_SERVER=postgres
-      - DB_DRIVER=pgsql
-      - DB_PORT=5432
-      - DB_DATABASE=${DB_DATABASE:-craft_pg}
-      - DB_USER=${DB_USER:-craft}
-      - DB_PASSWORD=${DB_PASSWORD:-craft}
-      - DB_SCHEMA=public
       - PHP_OPCACHE_ENABLE=1
       - PHP_OPCACHE_REVALIDATE_FREQ=2
 
@@ -80,7 +66,7 @@ services:
   fhstv-dev:
     image: node:24-alpine
     container_name: fhs-fhstv-dev
-    user: "${UID:-1000}:${GID:-1000}"
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     working_dir: /app
     environment:
       - NODE_ENV=development
@@ -107,7 +93,7 @@ services:
       context: ./apps/fhs-calendar-sync
       dockerfile: Dockerfile
     container_name: fhs-calendar-sync
-    user: "${UID:-1000}:${GID:-1000}"
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
     volumes:
       - ./apps/fhs-calendar-sync/data:/app/data:Z
       - ./${GOOGLE_APPLICATION_CREDENTIALS_PATH:-./apps/fhs-calendar-sync/semper-service-account.json}:/app/config/service-account.json:ro,Z

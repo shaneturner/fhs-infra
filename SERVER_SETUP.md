@@ -118,32 +118,24 @@ Run the automated setup script to ensure all submodules are initialized and Git 
 ```
 
 ### 3. Environment Configuration
-Create the root environment file and the Craft CMS environment file.
+Create the root environment file.
 ```bash
 cp .env.example .env
-cp apps/forresthill-postgres/.env.example apps/forresthill-postgres/.env
 ```
+*Note: All services (Craft CMS, Sync, FHSTV) now load their configuration directly from this root `.env` file.*
 
-**Crucial Production Variables:**
-
-**In root `.env`:**
+**Crucial Production Variables in root `.env`:**
 ```env
-# Set your live domains for Caddy routing and SSL generation
+# Domains & SSL
 SITE_DOMAIN=forresthill.school.nz
 FHSTV_DOMAIN=tv.forresthill.school.nz
 API_DOMAIN=api.forresthill.school.nz
-
-# Email for Let's Encrypt SSL registration
 CADDY_EMAIL=admin@forresthill.school.nz
-```
 
-**In `apps/forresthill-postgres/.env`:**
-```env
+# Craft CMS Production Settings
 ENVIRONMENT=production
-CRAFT_STREAM_LOG=1
-
-# Strong Security Key
 CRAFT_SECURITY_KEY=generate_a_long_random_string_here
+CRAFT_STREAM_LOG=1
 
 # Database Credentials (Change these from defaults!)
 DB_USER=craft_prod_user
