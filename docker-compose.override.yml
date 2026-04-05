@@ -44,11 +44,12 @@ services:
     environment:
       - NODE_ENV=development
       - HOME=/tmp/home # Ensure npm/pnpm can write config/cache as non-root
+      - COREPACK_HOME=/tmp/corepack
     volumes:
       - ./apps/fhstv-svelte-5:/app:Z
-    # Note: apk add requires root, so we do it in a way that respects the user mapping
+    # Note: we use corepack to run pnpm directly without 'enable' to avoid root requirements
     command: >
-      sh -c "corepack enable && pnpm install && pnpm dev --host"
+      sh -c "mkdir -p /tmp/corepack && corepack pnpm install && corepack pnpm dev --host"
     networks:
       - frontend
     depends_on:
