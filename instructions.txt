@@ -1,18 +1,15 @@
 # Forrest Hill Infrastructure - CLI Instructions
 
 ## Running Commands from the Host
-To run Craft or Composer commands without entering the container, use `docker compose exec` from the root directory:
+To run Craft or Composer commands without entering the container, use `docker exec` from the host:
 
 ### Craft CLI
-docker compose exec craft-app php craft <command>
+docker exec fhs-craft-app php craft <command>
 
 ### Composer
-docker compose exec craft-app composer <command>
+docker exec fhs-craft-app composer <command>
 
 ## Entering the Container (Interactive Shell)
 To open an interactive bash shell inside the Craft application container:
 
-docker compose exec -it craft-app bash
-
----
-Note: 'craft-app' is the service name used in the root orchestration. Docker Compose automatically routes these commands to the 'fhs-craft-app' container.
+docker exec -it fhs-craft-app bash
