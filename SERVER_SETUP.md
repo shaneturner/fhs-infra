@@ -23,9 +23,12 @@ su - deploy
 ```
 
 ### 2. Secure SSH Access
-Set up SSH key authentication and disable password login.
+Set up modern SSH key authentication (preferably **Ed25519**) and disable password login.
 ```bash
-# On your local machine, copy your public key to the server
+# On your local machine, ensure you are using an Ed25519 key
+# ssh-keygen -t ed25519 -C "your_email@example.com"
+
+# Copy your public key to the server
 ssh-copy-id deploy@your_server_ip
 
 # Back on the server, edit the SSH config
