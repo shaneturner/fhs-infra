@@ -13,3 +13,6 @@ docker compose exec craft-app composer <command>
 To open an interactive bash shell inside the Craft application container:
 
 docker compose exec -it craft-app bash
+
+---
+Note: 'craft-app' is the service name used in the root orchestration. Docker Compose automatically routes these commands to the 'fhs-craft-app' container.
