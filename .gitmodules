@@ -1,9 +1,12 @@
 [submodule "apps/forresthill-postgres"]
 	path = apps/forresthill-postgres
 	url = git@github.com:shaneturner/forresthill-postgres.git
+	branch = main
 [submodule "apps/fhstv-svelte-5"]
 	path = apps/fhstv-svelte-5
 	url = git@github.com:shaneturner/fhstv-svelte-5.git
+	branch = main
 [submodule "apps/fhs-calendar-sync"]
 	path = apps/fhs-calendar-sync
 	url = git@github.com:shaneturner/fhs-calendar-sync.git
+	branch = main
