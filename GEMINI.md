@@ -24,3 +24,8 @@ To ensure the local host is correctly configured with all required assets (espec
 1.  Run `./scripts/setup.sh` to initialize and pull all assets.
 2.  Run `./scripts/check-lfs.sh` to verify that no LFS objects are missing.
 
+## Submodule Synchronization
+This repository is configured to track the `main` branch of all subprojects in `.gitmodules`.
+- Run `./scripts/sync-submodules.sh` to pull the latest commits from all subprojects, merge them into the root repository, and commit the update automatically.
+
+

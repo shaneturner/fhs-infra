@@ -62,14 +62,20 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 ```
 
 ### 2. Domain Management
-Update the `SITE_DOMAIN`, `FHSTV_DOMAIN`, and `API_DOMAIN` in your root `.env` to point to your live production domains. Caddy will automatically handle SSL certificate provisioning.
+Update the `SITE_DOMAIN`, `FHSTV_DOMAIN`, and `API_DOMAIN` in your root .env to point to your live production domains. Caddy will automatically handle SSL certificate provisioning.
 
 ---
 
 ## Maintenance
 
+### Synchronizing Submodules
+This project is configured to track the `main` branch of all submodules. To bring everything to the latest version and commit the change to the root repository:
+```bash
+./scripts/sync-submodules.sh
+```
+
 ### Updating Submodules and LFS Assets
-To pull the latest changes and media for all applications:
+To pull the latest changes and media for all applications manually:
 ```bash
 ./scripts/setup.sh
 ```

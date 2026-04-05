@@ -13,3 +13,8 @@ docker exec fhs-craft-app composer <command>
 To open an interactive shell inside the Craft application container:
 
 docker exec -it fhs-craft-app sh
+
+## Submodule Synchronization
+To pull the latest changes from all subprojects and update the root repository pointer:
+
+./scripts/sync-submodules.sh
