@@ -211,9 +211,26 @@ PHP_OPCACHE_REVALIDATE_FREQ=0
 ```
 
 ### 4. Start the Production Environment
-Use both the base configuration and the production override file to spin up the immutable, optimized environment.
+Use the provided `fhs` helper script to spin up the immutable, optimized environment. This script automatically handles both the base and production override files.
+
+**Install the helper script:**
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+# Make it executable
+chmod +x ~/fhs-infra/scripts/fhs.sh
+
+# Symlink it into your system path (e.g., /usr/local/bin)
+sudo ln -s ~/fhs-infra/scripts/fhs.sh /usr/local/bin/fhs
+
+# Verify it works
+fhs ps
+```
+
+**Commands you'll use most often:**
+```bash
+fhs up --build -d  # Build and start services in background
+fhs stop           # Stop all services
+fhs logs -f        # View live logs
+fhs ps             # Check service status
 ```
 
 ### 5. Run Database Migrations (First Time Only)
@@ -250,8 +267,8 @@ cd ~/fhs-infra
 git pull origin main
 ./scripts/sync-submodules.sh
 
-# Rebuild and restart the containers with the new code
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+# Rebuild and restart the containers with the new code using the helper script
+fhs up --build -d
 
 # Run any pending migrations
 docker exec fhs-craft-app php craft up
