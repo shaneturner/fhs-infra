@@ -7,7 +7,6 @@ services:
       context: ./apps/forresthill-postgres
       dockerfile: docker/php/Dockerfile
     container_name: fhs-craft-app
-    user: "${PUID:-1000}:${PGID:-1000}"
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
@@ -29,6 +28,13 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+
+  # Craft CMS Queue Worker (Production Build)
+  craft-queue:
+    user: "root" # Override the base file to ensure it starts as root for mapping
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
 
   # Calendar Sync Service (Production Build)
   calendar-sync:
