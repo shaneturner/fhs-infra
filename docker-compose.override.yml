@@ -39,6 +39,12 @@ services:
 
   # Craft CMS Queue Worker
   craft-queue:
+    build:
+      context: ./apps/forresthill-postgres
+      dockerfile: docker/php/Dockerfile
+      args:
+        - PUID=${PUID:-1000}
+        - PGID=${PGID:-1000}
     volumes:
       - ./apps/forresthill-postgres:/var/www/html:Z
     environment:
