@@ -10,6 +10,7 @@ services:
         - PUID=${PUID:-1000}
         - PGID=${PGID:-1000}
     container_name: fhs-craft-app
+    user: "www-data"
     volumes:
       - ./apps/forresthill-postgres:/var/www/html:Z
     environment:
@@ -45,6 +46,8 @@ services:
       args:
         - PUID=${PUID:-1000}
         - PGID=${PGID:-1000}
+    container_name: fhs-craft-queue
+    user: "www-data"
     volumes:
       - ./apps/forresthill-postgres:/var/www/html:Z
     environment:

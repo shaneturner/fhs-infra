@@ -29,6 +29,7 @@ services:
         - PUID=${PUID:-1000}
         - PGID=${PGID:-1000}
     container_name: fhs-craft-queue
+    user: "www-data"
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
