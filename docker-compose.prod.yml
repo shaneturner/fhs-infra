@@ -13,7 +13,7 @@ services:
       - PGID=${PGID:-1000}
     # In production, we don't mount volumes for code; it's bundled in the image
     volumes:
-      - ./apps/forresthill-postgres/web:/var/www/html/web:ro
+      - ./apps/forresthill-postgres/web:/var/www/html/web:rw
       - ./apps/forresthill-postgres/storage:/var/www/html/storage:rw
     env_file: .env
     depends_on:
