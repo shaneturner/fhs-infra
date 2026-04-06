@@ -11,7 +11,7 @@ services:
     volumes:
       - ./apps/forresthill-postgres/web:/var/www/html/web:ro
       - ./apps/forresthill-postgres/storage:/var/www/html/storage:rw
-    env_file: ./apps/forresthill-postgres/.env
+    env_file: .env
     depends_on:
       postgres:
         condition: service_healthy
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./data/calendar-sync:/app/data:rw
       - ./apps/fhs-calendar-sync/semper-service-account.json:/app/config/service-account.json:ro
-    env_file: ./apps/fhs-calendar-sync/.env
+    env_file: .env
     networks:
       - backend
     restart: unless-stopped
