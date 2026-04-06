@@ -80,6 +80,7 @@ services:
       - NODE_ENV=development
       - HOME=/tmp/home # Ensure npm/pnpm can write config/cache as non-root
       - COREPACK_HOME=/tmp/corepack
+      - PUBLIC_API_BASE_URL=${PUBLIC_API_BASE_URL:-http://forresthill.localhost}
     volumes:
       - ./apps/fhstv-svelte-5:/app:Z
     # Note: we use corepack to run pnpm directly without 'enable' to avoid root requirements
