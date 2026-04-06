@@ -6,8 +6,9 @@ services:
     build:
       context: ./apps/forresthill-postgres
       dockerfile: docker/php/Dockerfile
-      - PUID=${PUID:-1000}
-      - PGID=${PGID:-1000}
+      args:
+        - PUID=${PUID:-1000}
+        - PGID=${PGID:-1000}
     container_name: fhs-craft-app
     user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
