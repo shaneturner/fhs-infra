@@ -2,10 +2,53 @@
     # Production Global Config
     admin 0.0.0.0:2019
     email {$CADDY_EMAIL}
+
+    order cache before rewrite
+}
+
+(security_headers) {
+    header {
+        # 2026 Security Best Practices
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "geolocation=(), microphone=(), camera=()"
+        Content-Security-Policy "upgrade-insecure-requests;"
+        # Hide server version
+        -Server
+    }
 }
 
 # Forrest Hill Main Website
 {$SITE_DOMAIN} {
+    import security_headers
+    
+    # Modern Compression (Zstd preferred)
+    encode zstd gzip
+
+    # Static Assets Caching (Aggressive)
+    handle_path /assets/* {
+        header Cache-Control "public, max-age=31536000, immutable"
+        root * /var/www/html/web/assets
+        file_server
+    }
+
+    handle_path /images/* {
+        header Cache-Control "public, max-age=604800, must-revalidate"
+        root * /var/www/html/web/images
+        file_server
+    }
+
+    # Full Page Caching (Instant Loads)
+    # Caches guest requests for 10 minutes. 
+    # Automatically bypassed if cookies like 'CraftSessionId' are present.
+    cache {
+        ttl 10m
+        stale_while_revalidate 1h
+        key {path}{query}
+    }
+
     root * /var/www/html/web
     php_fastcgi craft-app:9000
     file_server
@@ -16,9 +59,14 @@
 
 # FHSTV Svelte (SSG)
 {$FHSTV_DOMAIN} {
+    import security_headers
+    encode zstd gzip
+
     # Serve pre-built static files directly
     root * /var/www/fhstv
-    file_server
+    file_server {
+        precompressed zstd gzip
+    }
     
     # Fallback to index.html for SvelteKit client-side routing
     try_files {path} /index.html

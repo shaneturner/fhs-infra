@@ -60,9 +60,11 @@ services:
       timeout: 5s
       retries: 3
 
-  # Caddy (Production Configuration)
+  # Caddy (Production Configuration with Cache Module)
   caddy:
-    image: caddy:2-alpine
+    build:
+      context: .
+      dockerfile: docker/caddy/Dockerfile
     container_name: fhs-caddy
     volumes:
       - ./caddy/Caddyfile.prod:/etc/caddy/Caddyfile:Z
