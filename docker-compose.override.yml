@@ -6,11 +6,10 @@ services:
     build:
       context: ./apps/forresthill-postgres
       dockerfile: docker/php/Dockerfile
-      args:
-        - USER_ID=${USER_ID:-1000}
-        - GROUP_ID=${GROUP_ID:-1000}
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
     container_name: fhs-craft-app
-    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
       - ./apps/forresthill-postgres:/var/www/html:Z
     environment:
@@ -66,7 +65,7 @@ services:
   fhstv-dev:
     image: node:24-alpine
     container_name: fhs-fhstv-dev
-    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    user: "${PUID:-1000}:${PGID:-1000}"
     working_dir: /app
     environment:
       - NODE_ENV=development
@@ -93,7 +92,7 @@ services:
       context: ./apps/fhs-calendar-sync
       dockerfile: Dockerfile
     container_name: fhs-calendar-sync
-    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
       - ./apps/fhs-calendar-sync/data:/app/data:Z
       - ./${GOOGLE_APPLICATION_CREDENTIALS_PATH:-./apps/fhs-calendar-sync/semper-service-account.json}:/app/config/service-account.json:ro,Z

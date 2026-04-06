@@ -222,6 +222,21 @@ If this is a new server, apply the database schema.
 docker exec fhs-craft-app php craft up
 ```
 
+### 6. Troubleshooting: Permissions ("Not Writable")
+If you see an error like `storage isn't writable by PHP`, it means the container's internal user doesn't match your host user. 
+
+1. **Identify your IDs:**
+   ```bash
+   id -u  # Usually 1000
+   id -g  # Usually 1000
+   ```
+2. **Update `.env`:** Ensure `PUID` and `PGID` in your root `.env` match these values.
+3. **Restart:** 
+   ```bash
+   docker compose up -d
+   ```
+   The `serversideup` image will automatically map the internal PHP user to these IDs.
+
 ---
 
 ## Phase 4: Ongoing Maintenance

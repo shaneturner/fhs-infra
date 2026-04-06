@@ -7,6 +7,10 @@ services:
       context: ./apps/forresthill-postgres
       dockerfile: docker/php/Dockerfile
     container_name: fhs-craft-app
+    user: "${PUID:-1000}:${PGID:-1000}"
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
     # In production, we don't mount volumes for code; it's bundled in the image
     volumes:
       - ./apps/forresthill-postgres/web:/var/www/html/web:ro

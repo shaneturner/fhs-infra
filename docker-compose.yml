@@ -26,7 +26,10 @@ services:
       context: ./apps/forresthill-postgres
       dockerfile: docker/php/Dockerfile
     container_name: fhs-craft-queue
-    user: "${UID:-1000}:${GID:-1000}"
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+    user: "${PUID:-1000}:${PGID:-1000}"
     env_file: .env
     command: ["php", "craft", "queue/listen"]
     depends_on:
