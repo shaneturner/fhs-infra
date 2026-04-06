@@ -45,7 +45,7 @@
     # Automatically bypassed if cookies like 'CraftSessionId' are present.
     cache {
         ttl 10m
-        stale_while_revalidate 1h
+        stale 1h
         key {path}{query}
     }
 
