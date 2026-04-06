@@ -1,6 +1,18 @@
 name: fhs-infra
 
-services:
+  postgres:
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_buffers=512MB"
+      - "-c"
+      - "work_mem=16MB"
+      - "-c"
+      - "maintenance_work_mem=128MB"
+      - "-c"
+      - "effective_cache_size=1536MB"
+    restart: unless-stopped
+
   # Craft CMS App (Production Build)
   craft-app:
     build:
