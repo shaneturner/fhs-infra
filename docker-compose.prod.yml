@@ -49,6 +49,7 @@ services:
       - ./apps/fhs-calendar-sync/semper-service-account.json:/app/config/service-account.json:ro
     env_file: .env
     networks:
+      - frontend
       - backend
     restart: unless-stopped
     depends_on:
