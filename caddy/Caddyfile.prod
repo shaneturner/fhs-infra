@@ -4,6 +4,15 @@
     email {$CADDY_EMAIL}
 
     order cache before rewrite
+
+    # Global Cache Configuration
+    cache {
+        ttl 10m
+        stale 1h
+        otter {
+            size 10000
+        }
+    }
 }
 
 (security_headers) {
@@ -40,13 +49,8 @@
         file_server
     }
 
-    # Full Page Caching (Instant Loads)
-    # Caches guest requests for 10 minutes. 
-    # Automatically bypassed if cookies like 'CraftSessionId' are present.
-    cache {
-        ttl 10m
-        stale 1h
-    }
+    # Enable full page caching for guest users
+    cache
 
     root * /var/www/html/web
     php_fastcgi craft-app:9000
