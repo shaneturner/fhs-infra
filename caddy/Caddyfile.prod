@@ -46,7 +46,6 @@
     cache {
         ttl 10m
         stale 1h
-        key {path}{query}
     }
 
     root * /var/www/html/web
