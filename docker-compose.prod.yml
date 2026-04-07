@@ -27,6 +27,7 @@ services:
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
+      - PRIMARY_SITE_URL=${PRIMARY_SITE_URL}
     # In production, we don't mount volumes for code; it's bundled in the image
     volumes:
       - ./apps/forresthill-postgres/web:/var/www/html/web:rw
@@ -52,6 +53,20 @@ services:
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
+      - PRIMARY_SITE_URL=${PRIMARY_SITE_URL}
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep '[p]hp craft queue/listen' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   # Calendar Sync Service (Production Build)
   calendar-sync:
