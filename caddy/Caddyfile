@@ -5,13 +5,24 @@
 }
 
 # Forrest Hill Main Website
-http://{$SITE_DOMAIN} {
-    root * /var/www/html/web
-    php_fastcgi craft-app:9000
-    file_server
+http:// {
+    @fhs_site {
+        host {$SITE_DOMAIN}
+        host caddy
+    }
+    handle @fhs_site {
+        root * /var/www/html/web
+        php_fastcgi craft-app:9000
+        file_server
 
-    # Craft CMS standard rewrite
-    try_files {path} {path}/ /index.php?{query}
+        # CORS Headers for development flexibility
+        header Access-Control-Allow-Origin "*"
+        header Access-Control-Allow-Methods "GET, POST, OPTIONS, PUT, DELETE"
+        header Access-Control-Allow-Headers "*"
+
+        # Craft CMS standard rewrite
+        try_files {path} {path}/ /index.php?{query}
+    }
 }
 
 # FHSTV Svelte Dev Server
