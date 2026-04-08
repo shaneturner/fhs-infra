@@ -5,8 +5,8 @@
 set -e
 
 # --- GUARD CLAUSE: Only run on local development host ---
-# (Assumes your production host is named 'forresthill')
-if [ "$(hostname)" == "forresthill" ]; then
+# (Assumes your production host is named 'vultr')
+if [ "$(hostname)" == "vultr" ]; then
     echo "ERROR: This script is for LOCAL development use only."
     echo "It pulls from production to your local machine."
     exit 1

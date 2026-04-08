@@ -5,7 +5,7 @@
 set -e
 
 # --- GUARD CLAUSE: Only run on production server ---
-if [ "$(hostname)" != "forresthill" ]; then
+if [ "$(hostname)" != "vultr" ]; then
     echo "ERROR: This script is for the PRODUCTION server only."
     echo "It pulls from GitHub to the production server."
     exit 1
