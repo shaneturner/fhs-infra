@@ -28,6 +28,19 @@ services:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
       - PRIMARY_SITE_URL=${PRIMARY_SITE_URL}
+      # Production OPcache Optimizations
+      - PHP_OPCACHE_ENABLE=1
+      - PHP_OPCACHE_MEMORY_CONSUMPTION=256
+      - PHP_OPCACHE_INTERNED_STRINGS_BUFFER=64
+      - PHP_OPCACHE_MAX_ACCELERATED_FILES=30000
+      - PHP_OPCACHE_REVALIDATE_FREQ=0
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=0
+      - PHP_OPCACHE_REALPATH_CACHE_SIZE=16M
+      - PHP_OPCACHE_REALPATH_CACHE_TTL=3600
+      # PHP-FPM Optimizations (Static for performance)
+      - PHP_FPM_PM_CONTROL=static
+      - PHP_FPM_PM_MAX_CHILDREN=5
+      - PHP_FPM_PM_MAX_REQUESTS=500
     # In production, we don't mount volumes for code; it's bundled in the image
     volumes:
       - ./apps/forresthill-postgres/web:/var/www/html/web:rw
@@ -54,6 +67,19 @@ services:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
       - PRIMARY_SITE_URL=${PRIMARY_SITE_URL}
+      # Production OPcache Optimizations
+      - PHP_OPCACHE_ENABLE=1
+      - PHP_OPCACHE_MEMORY_CONSUMPTION=256
+      - PHP_OPCACHE_INTERNED_STRINGS_BUFFER=64
+      - PHP_OPCACHE_MAX_ACCELERATED_FILES=30000
+      - PHP_OPCACHE_REVALIDATE_FREQ=0
+      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=0
+      - PHP_OPCACHE_REALPATH_CACHE_SIZE=16M
+      - PHP_OPCACHE_REALPATH_CACHE_TTL=3600
+      # PHP-FPM Optimizations (Static for performance)
+      - PHP_FPM_PM_CONTROL=static
+      - PHP_FPM_PM_MAX_CHILDREN=5
+      - PHP_FPM_PM_MAX_REQUESTS=500
     env_file: .env
     depends_on:
       postgres:
