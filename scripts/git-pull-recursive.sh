@@ -14,8 +14,8 @@ fi
 echo "Updating root repository..."
 git pull origin main
 
-echo "Initializing and updating submodules (ignoring local untracked/dirty content)..."
-# The --ignore-submodules=dirty flag ensures user uploads in web/images don't block the update
-git submodule update --init --recursive --ignore-submodules=dirty
+echo "Initializing and updating submodules..."
+# Syncing submodules recursively
+git submodule update --init --recursive
 
 echo "Git synchronization complete!"
