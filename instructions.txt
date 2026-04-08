@@ -18,3 +18,19 @@ docker exec -it fhs-craft-app sh
 To pull the latest changes from all subprojects and update the root repository pointer:
 
 ./scripts/sync-submodules.sh
+
+## Production Operations
+
+### Deploy / Update Production
+1. Pull the latest code: `git pull`
+2. Restart and rebuild: `docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build`
+
+### Reload Caddy Configuration
+To apply Caddyfile changes without a full container restart:
+
+docker exec fhs-caddy caddy reload --config /etc/caddy/Caddyfile
+
+### Performance & Cache Status
+To verify the health of the production cache:
+
+curl -s -I https://forresthill.school.nz | grep -i 'cache-status'

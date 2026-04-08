@@ -25,10 +25,10 @@ http:// {
     }
 }
 
-# FHSTV Svelte Dev Server
-http://{$FHSTV_DOMAIN} {
-    reverse_proxy fhstv-dev:5173
-}
+# FHSTV Svelte Dev Server (Disabled)
+# http://{$FHSTV_DOMAIN} {
+#     reverse_proxy fhstv-dev:5173
+# }
 
 # Calendar Sync API
 http://{$API_DOMAIN} {

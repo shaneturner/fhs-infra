@@ -72,31 +72,31 @@ services:
       retries: 3
       start_period: 10s
 
-  # FHSTV Svelte Dev Server
-  fhstv-dev:
-    image: node:24-alpine
-    container_name: fhs-fhstv-dev
-    user: "${PUID:-1000}:${PGID:-1000}"
-    working_dir: /app
-    environment:
-      - NODE_ENV=development
-      - HOME=/tmp/home # Ensure npm/pnpm can write config/cache as non-root
-      - COREPACK_HOME=/tmp/corepack
-      - PUBLIC_API_BASE_URL=${PUBLIC_API_BASE_URL:-http://192.168.1.208}
-    volumes:
-      - ./apps/fhstv-svelte-5:/app:Z
-    # Note: we use corepack to run pnpm directly without 'enable' to avoid root requirements
-    command: >
-      sh -c "mkdir -p /tmp/corepack && corepack pnpm install && corepack pnpm dev --host"
-    networks:
-      - frontend
-    depends_on:
-      - craft-app
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5173"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # FHSTV Svelte Dev Server (Disabled)
+  # fhstv-dev:
+  #   image: node:24-alpine
+  #   container_name: fhs-fhstv-dev
+  #   user: "${PUID:-1000}:${PGID:-1000}"
+  #   working_dir: /app
+  #   environment:
+  #     - NODE_ENV=development
+  #     - HOME=/tmp/home # Ensure npm/pnpm can write config/cache as non-root
+  #     - COREPACK_HOME=/tmp/corepack
+  #     - PUBLIC_API_BASE_URL=${PUBLIC_API_BASE_URL:-http://192.168.1.208}
+  #   volumes:
+  #     - ./apps/fhstv-svelte-5:/app:Z
+  #   # Note: we use corepack to run pnpm directly without 'enable' to avoid root requirements
+  #   command: >
+  #     sh -c "mkdir -p /tmp/corepack && corepack pnpm install && corepack pnpm dev --host"
+  #   networks:
+  #     - frontend
+  #   depends_on:
+  #     - craft-app
+  #   healthcheck:
+  #     test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:5173"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
 
   # Calendar Sync Service
   calendar-sync:

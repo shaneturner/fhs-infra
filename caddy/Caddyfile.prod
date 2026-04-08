@@ -5,10 +5,11 @@
 
     order cache before rewrite
 
-    # Global Cache Configuration
+    # Global Cache Configuration (Souin)
     cache {
         ttl 10m
         stale 1h
+        allowed_http_verbs GET HEAD
     }
 }
 

@@ -64,6 +64,14 @@ docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 ### 2. Domain Management
 Update the `SITE_DOMAIN`, `FHSTV_DOMAIN`, and `API_DOMAIN` in your root .env to point to your live production domains. Caddy will automatically handle SSL certificate provisioning.
 
+### 3. Production Performance & Caching
+The production stack is optimized for low-resource VPS (1 vCPU / 2GB RAM):
+- **PHP-FPM (Static)**: Switched to `pm = static` to eliminate "cold start" delays.
+- **Caddy Cache (Souin)**: Integrated full-page caching for guest users.
+- **OPcache**: Pre-configured with production-ready memory and validation settings.
+
+To apply these optimizations, ensure your `.env` matches the recommended settings in `.env.example`.
+
 ---
 
 ## Maintenance
