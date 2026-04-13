@@ -1,36 +1,41 @@
-# Forrest Hill Infrastructure - CLI Instructions
+Forrest Hill Infrastructure - CLI Instructions
+===============================================
 
-## Running Commands from the Host
-To run Craft or Composer commands without entering the container, use `docker exec` from the host:
 
-### Craft CLI
-docker exec fhs-craft-app php craft <command>
+RUNNING COMMANDS FROM THE HOST
+-------------------------------
+Run Craft, Composer, or Node commands without entering the container:
 
-### Composer
-docker exec fhs-craft-app composer <command>
+  Craft CLI
+    docker exec fhs-craft-app php craft <command>
 
-## Entering the Container (Interactive Shell)
-To open an interactive shell inside the Craft application container:
+  Composer
+    docker exec fhs-craft-app composer <command>
 
-docker exec -it fhs-craft-app sh
+  pnpm
+    docker exec fhs-craft-app pnpm <command>
 
-## Submodule Synchronization
-To pull the latest changes from all subprojects and update the root repository pointer:
 
-./scripts/sync-submodules.sh
+ENTERING THE CONTAINER (Interactive Shell)
+------------------------------------------
+  docker exec -it fhs-craft-app sh
 
-## Production Operations
 
-### Deploy / Update Production
-1. Pull the latest code: `git pull`
-2. Restart and rebuild: `docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build`
+SUBMODULE SYNCHRONIZATION
+--------------------------
+Pull the latest changes from all subprojects and update the root repository pointer:
 
-### Reload Caddy Configuration
-To apply Caddyfile changes without a full container restart:
+  ./scripts/sync-submodules.sh
 
-docker exec fhs-caddy caddy reload --config /etc/caddy/Caddyfile
 
-### Performance & Cache Status
-To verify the health of the production cache:
+PRODUCTION OPERATIONS
+----------------------
+Deploy / Update Production
+  1. Pull the latest code:    git pull
+  2. Rebuild and restart:     docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
 
-curl -s -I https://forresthill.school.nz | grep -i 'cache-status'
+Reload Caddy Configuration (apply Caddyfile changes without a full restart)
+  docker exec fhs-caddy caddy reload --config /etc/caddy/Caddyfile
+
+Performance & Cache Status
+  curl -s -I https://forresthill.school.nz | grep -i 'cache-status'

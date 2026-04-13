@@ -28,6 +28,7 @@ services:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
       - PRIMARY_SITE_URL=${PRIMARY_SITE_URL}
+      - CADDY_ADMIN_URL=http://caddy:2019
       # Production OPcache Optimizations
       - PHP_OPCACHE_ENABLE=1
       - PHP_OPCACHE_MEMORY_CONSUMPTION=256

@@ -5,7 +5,7 @@ services:
   craft-app:
     build:
       context: ./apps/forresthill-postgres
-      dockerfile: docker/php/Dockerfile
+      dockerfile: docker/php/Dockerfile.dev
       args:
         - PUID=${PUID:-1000}
         - PGID=${PGID:-1000}
