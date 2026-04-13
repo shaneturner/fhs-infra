@@ -10,6 +10,12 @@
         ttl 10m
         stale 1h
         allowed_http_verbs GET HEAD
+        # In-memory storage backend (built into the image via xcaddy)
+        otter
+        api {
+            # Enable the purge API so Craft can invalidate cache on content changes
+            souin
+        }
     }
 }
 
