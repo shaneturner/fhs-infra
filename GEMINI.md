@@ -9,7 +9,7 @@ The core infrastructure for the main Craft CMS application (`forresthill-postgre
 ### Key Architectural Features:
 1.  **Optimized Base Image:** Uses `serversideup/php:8.2-fpm-alpine`. This image is specifically tuned for PHP performance and provides non-root user mapping via `PUID` and `PGID`.
 2.  **Multi-Stage Builds:** The `Dockerfile` uses a layered approach to build frontend assets (Node.js) and install PHP dependencies (Composer), ensuring the final runtime image is lean and contains no unnecessary build tools.
-3.  **Clean Environment Separation:** The Docker configuration is split into base (`docker-compose.yml`), development (`docker-compose.override.yml`), and production (`docker-compose.prod.yml`) configurations.
+3.  **Clean Environment Separation:** The Docker configuration is split into base (`docker-compose.yml`), development (`docker-compose.override.yml`), and production (`docker-compose.prod.yml`) configurations. All containers are built and managed from the **root repository** — docker-compose files inside submodule directories exist for reference only (in case projects are ever split apart).
 4.  **Integrated Queue Worker:** A dedicated container running `./craft queue/listen` handles background tasks independently of web requests.
 5.  **Local SMTP Catching:** [Mailpit](http://mailpit.localhost) is integrated into the development environment to safely intercept and preview outgoing emails.
 6.  **Unified Caddy Proxy:** Caddy handles all local routing (including subdomains for Mailpit, FHSTV, and the API) and manages automatic HTTPS in production.
